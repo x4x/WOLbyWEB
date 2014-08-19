@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<hosts>
+  <title>WOL</title>
+  <host>
+    <name>Server1</name>
+    <mac>ff.ff.ff.ff.ff.ff</mac>
+    <ip>0.0.0.0</ip>
+    <info>this is a test!</info>
+  </host>
+
+</hosts>
