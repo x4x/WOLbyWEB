@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2
 # -*- coding: iso-8859-1 -*-
 
 """
@@ -18,25 +18,67 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 Name: wol.py
-Programteil: 
+Info: 
 Thema: Wake on LAN
 Date: 19.8.2014
 Version:
 """
 
-from bottle import route
-from bottle import run
+from bottle import route, post, get, request
+#from bottle import run
 
 from wakeonlan import wol
 
-from xml.dom.minidom import parse, parseString
+import xmltodict
 
-@route('/')
+html= """<!DOCTYPE html>
+<html>
+<body>
+
+<h1>{0}</h1>
+{1}
+
+</body>
+</html>
+"""
+
+
+@route('/', method='GET')
 def wol_menue():
-    dom1 = parse( "hosts.xml" )
+    
+    # read xml file and convert it do a dict.
+    with open('hosts.xml') as fd:
+        xml = xmltodict.parse(fd.read())
 
-    hosts= dom1.getElementsByTagName('hosts')
-    help(hosts)
-    return( dom1.toxml())
+    # crate table with hosts
+    table="""<table border="1">
+    <tr>
+    <td>Name</td><td>mac</td><td>IP</td><td>Info</td> <td>WakeUP</td>
+    </tr>
+    {0} </table>"""
+    row=""
+    for each in xml['hosts']['host']:
+        row += """<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td>
+        <td>
+        <form action="wol.wsgi" method="get">
+        <button name="mac" type="submit" value="{1}">Wake up</button>
+        </form>
+        </td></tr>""".format(each['name'], each['mac'], each['ip'], each['info'] )
+    table= table.format(row)
 
-run(host='localhost', port=8080, debug=True)
+    # crate final HTML page.
+    html_out= html.format( xml['hosts']['title'], table)
+    
+    # POST methods
+    try:
+        wol_mac= request.query['mac']
+        print wol_mac
+    except:
+        wol_mac= None
+
+    if wol_mac is not None:
+        wol.send_magic_packet(wol_mac)
+
+    return( html_out )
+
+#run(host='localhost', port=8081, debug=True)

@@ -7,5 +7,11 @@
     <ip>0.0.0.0</ip>
     <info>this is a test!</info>
   </host>
-
+  <host>
+    <name>Server2</name>
+    <mac>aa:bb:cc:ee:ff:22</mac>
+    <ip>0.0.0.0</ip>
+    <info>this is a test!</info>
+  </host>
+ 
 </hosts>
