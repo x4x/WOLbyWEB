@@ -1,7 +1,7 @@
 # Wake on LAN over WEB
 
-Wake up Machines over a python WEB interface.
+Wake up Machines with an python WEB interface.
 
 necessary python modules:
 * [Bottle][http://bottlepy.org/]
-* [awake 1.0][https://pypi.python.org/pypi/awake]
+* [wakeonlan][https://pypi.python.org/pypi/wakeonlan/0.2.2]

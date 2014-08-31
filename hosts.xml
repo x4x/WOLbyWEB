@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <hosts>
-  <title>WOL</title>
+  <title>WOLbyWEB</title>
   <host>
-    <name>Server1</name>
-    <mac>ff.ff.ff.ff.ff.ff</mac>
+    <name>Host1</name>
+    <mac>00.aa.bb.cc.ff.44</mac>
     <ip>0.0.0.0</ip>
-    <info>this is a test!</info>
+    <info>PC</info>
   </host>
   <host>
-    <name>Server2</name>
-    <mac>aa:bb:cc:ee:ff:22</mac>
+    <name>Server1</name>
+    <mac>11.22.33.44.55.66</mac>
     <ip>0.0.0.0</ip>
-    <info>this is a test!</info>
+    <info>The Server</info>
   </host>
  
 </hosts>

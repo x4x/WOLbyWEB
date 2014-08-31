@@ -60,7 +60,7 @@ def wol_menue():
     for each in xml['hosts']['host']:
         row += """<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td>
         <td>
-        <form action="wol.wsgi" method="get">
+        <form action="/apps/wol/wol.wsgi" method="get">
         <button name="mac" type="submit" value="{1}">Wake up</button>
         </form>
         </td></tr>""".format(each['name'], each['mac'], each['ip'], each['info'] )
