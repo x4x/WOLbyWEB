@@ -72,13 +72,13 @@ def wol_menue():
     # POST methods
     try:
         wol_mac= request.query['mac']
-        print wol_mac
+        #print( wol_mac)
     except:
         wol_mac= None
 
     if wol_mac is not None:
         wol.send_magic_packet(wol_mac)
 
-    return( html_out )
+    return( html_out.encode('utf-8') )
 
 #run(host='localhost', port=8081, debug=True)
