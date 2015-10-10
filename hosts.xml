@@ -2,15 +2,15 @@
 <hosts>
   <title>WOL</title>
   <host>
-    <name>x4x-Arcadia</name>
-    <mac>00.17.31.d1.c8.07</mac>
-    <ip>10.0.0.102</ip>
+    <name>PC1</name>
+    <mac>00.22.33.44.55.66</mac>
+    <ip>10.0.0.146</ip>
     <info>Home Server</info>
   </host>
   <host>
-    <name>x4x-Z87-PC</name>
-    <mac>74.D0.2B.91.7C.BD</mac>
-    <ip>10.0.0.80</ip>
+    <name>2PC</name>
+    <mac>00.11.22.33.44.55</mac>
+    <ip>10.0.0.110</ip>
     <info>My PC</info>
   </host>
  
