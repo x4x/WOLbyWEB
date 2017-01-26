@@ -9,9 +9,9 @@ setup(name='WOLbyWEB',
       license='GPL2',
       packages=['WOLbyWEB'],
       install_requires=[
-          'cmd2',
-          'pyserial',
-	  'xmltodict',
+	      'bottle',
+	      'wakeonlan',
+	      'xmltodict',
       ],
       include_package_data=True,
       zip_safe=False)
