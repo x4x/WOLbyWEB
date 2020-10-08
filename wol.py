@@ -5,6 +5,8 @@
 Wake on LAN WEB interface for waking up server sided systehms.
 Copyright (C) 2013 x4x georg.la8585@gmx.at
 
+Updated to new dependencies (C) 2020 sharkcow@gmx.de
+
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
 as published by the Free Software Foundation; either version 2
@@ -18,16 +20,16 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 Name: wol.py
-Info: 
+Info:
 Thema: Wake on LAN
-Date: 19.8.2014
-Version:
+Date: 19.8.2014, update 23.9.2020
+Version: 1.1
 """
 
 from bottle import route, post, get, request
 #from bottle import run
 
-from wakeonlan import wol
+import wakeonlan as wol
 
 import xmltodict
 
@@ -45,34 +47,34 @@ html= """<!DOCTYPE html>
 
 @route('/', method='GET')
 def wol_menue():
-    
+
     # read xml file and convert it do a dict.
     with open('hosts.xml') as fd:
         xml = xmltodict.parse(fd.read())
 
-    # crate table with hosts
+    # create table with hosts
     table="""<table border="1">
     <tr>
-    <td>Name</td><td>mac</td><td>IP</td><td>Info</td> <td>WakeUP</td>
+    <td>Name</td><td>Wake up</td><td>MAC</td><td>IP</td><td>Info</td>
     </tr>
     {0} </table>"""
     row=""
     for each in xml['hosts']['host']:
-        row += """<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td>
+        row += """<tr><td>{0}</td>
         <td>
-        <form action="/apps/wol/wol.wsgi" method="get">
+        <form action="/" method="get">
         <button name="mac" type="submit" value="{1}">Wake up</button>
         </form>
-        </td></tr>""".format(each['name'], each['mac'], each['ip'], each['info'] )
+        </td><td>{1}</td><td>{2}</td><td>{3}</td>
+        </tr>""".format(each['name'], each['mac'], each['ip'], each['info'] )
     table= table.format(row)
 
-    # crate final HTML page.
+    # create final HTML page.
     html_out= html.format( xml['hosts']['title'], table)
-    
+
     # POST methods
     try:
         wol_mac= request.query['mac']
-        #print( wol_mac)
     except:
         wol_mac= None
 
@@ -80,5 +82,3 @@ def wol_menue():
         wol.send_magic_packet(wol_mac)
 
     return( html_out.encode('utf-8') )
-
-#run(host='localhost', port=8081, debug=True)
