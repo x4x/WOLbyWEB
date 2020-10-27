@@ -22,8 +22,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 Name: wol.py
 Info:
 Thema: Wake on LAN
-Date: 19.8.2014, update 23.9.2020
-Version: 1.1
+Date: 26.10.2020
+Version: 1.3
+23.09.20 V1.2: updated to new dependecies
+26.10.20 V1.3: added running detection via ping
 """
 
 from bottle import route, post, get, request
@@ -32,6 +34,10 @@ from bottle import route, post, get, request
 import wakeonlan as wol
 
 import xmltodict
+import subprocess
+import timer
+import os
+from datetime import datetime
 
 html= """<!DOCTYPE html>
 <html>
@@ -44,10 +50,8 @@ html= """<!DOCTYPE html>
 </html>
 """
 
-
 @route('/', method='GET')
 def wol_menue():
-
     # read xml file and convert it do a dict.
     with open('hosts.xml') as fd:
         xml = xmltodict.parse(fd.read())
@@ -55,22 +59,28 @@ def wol_menue():
     # create table with hosts
     table="""<table border="1">
     <tr>
-    <td>Name</td><td>Wake up</td><td>MAC</td><td>IP</td><td>Info</td>
+    <td>Name</td><td>running</td><td>Wake up</td><td>MAC</td><td>IP</td><td>Info</td>
     </tr>
     {0} </table>"""
     row=""
+    
+    running = "yes", "no"
     for each in xml['hosts']['host']:
-        row += """<tr><td>{0}</td>
+        with open(os.devnull, "wb") as limbo:
+            ping=subprocess.Popen(["ping", "-c", "1", "-n", "-w", "1", each['ip']],
+                stdout=limbo, stderr=limbo).wait()
+
+        row += """<tr><td>{0}</td><td>{4}</td>
         <td>
         <form action="/" method="get">
         <button name="mac" type="submit" value="{1}">Wake up</button>
         </form>
         </td><td>{1}</td><td>{2}</td><td>{3}</td>
-        </tr>""".format(each['name'], each['mac'], each['ip'], each['info'] )
+        </tr>""".format(each['name'], each['mac'], each['ip'], each['info'], running[ping])
     table= table.format(row)
 
     # create final HTML page.
-    html_out= html.format( xml['hosts']['title'], table)
+    html_out= html.format(xml['hosts']['title'], table)
 
     # POST methods
     try:
